@@ -6,43 +6,87 @@ class PomodoroClock extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timers: [
-        {
-          type: "session",
-          length: 25
-        },
-        {
-          type: "break",
-          length: 5
-        }
-      ]
-    }
+      sessionLength: 25,
+      breakLength: 5
+    };
     this.handleReset = this.handleReset.bind(this);
+    this.handleModifyLength = this.handleModifyLength.bind(this);
   }
   
   handleReset() {
     this.setState({
-      timers: [
-        {
-          type: "session",
-          length: 25
-        },
-        {
-          type: "break",
-          length: 5
-        }
-      ]
+      sessionLength: 25,
+      breakLength: 5
     });
   }
-
   
+  handleModifyLength(type, operator) {
+    switch(type) {
+      case 'session':
+        switch(operator) {
+          case '+':
+            if (this.state.sessionLength < 60)
+            {
+              this.setState({
+                sessionLength: this.state.sessionLength + 1,
+                breakLength: this.state.breakLength
+              });
+            }
+            break;
+          case '-':
+            if (this.state.sessionLength > 1)
+            {
+              this.setState({
+                sessionLength: this.state.sessionLength - 1,
+                breakLength: this.state.breakLength
+              });
+            }
+            break;
+          default:
+            console.log('invalid operator');
+            break;
+        }
+        break;
+      case 'break':
+        switch(operator) {
+          case '+':
+            if (this.state.breakLength < 60)
+            {
+              this.setState({
+                sessionLength: this.state.sessionLength,
+                breakLength: this.state.breakLength + 1
+              });
+            }
+            break;
+          case '-':
+            if (this.state.breakLength > 1)
+            {
+              this.setState({
+                sessionLength: this.state.sessionLength,
+                breakLength: this.state.breakLength - 1
+              });
+            }
+            break;
+          default:
+            console.log('invalid operator');
+            break;
+        }
+        break;
+        default:
+          console.log('invalid type');
+          break;
+    }
+  }
   
   render() {
-    const timers = this.state.timers.map(timer => <TimerControl key={timer.type} type={timer.type} length={timer.length}/>);
     const reset = this.handleReset;
+    const modifyLength = this.handleModifyLength;
+    const sessionLength = this.state.sessionLength;
+    const breakLength = this.state.breakLength;
     return (
       <div>
-        {timers}
+        <TimerControl key='session' type='session' length={sessionLength} modifyLength={modifyLength}/>
+        <TimerControl key='break' type='break' length={breakLength} modifyLength={modifyLength}/>
         <TimerDisplay reset={reset}/>
       </div>
     );
