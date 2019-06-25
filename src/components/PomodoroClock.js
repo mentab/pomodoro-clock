@@ -11,8 +11,17 @@ class PomodoroClock extends Component {
     };
     this.handleReset = this.handleReset.bind(this);
     this.handleModifyLength = this.handleModifyLength.bind(this);
+    this.handleStartStop = this.handleStartStop.bind(this);
   }
   
+  handleStartStop() {
+    this.timer = setInterval(this.handleTimer, 1000);
+  }
+
+  handleTimer() {
+    console.log('OK');
+  }
+
   handleReset() {
     this.setState({
       sessionLength: 25,
@@ -81,13 +90,14 @@ class PomodoroClock extends Component {
   render() {
     const reset = this.handleReset;
     const modifyLength = this.handleModifyLength;
+    const startStop = this.handleStartStop;
     const sessionLength = this.state.sessionLength;
     const breakLength = this.state.breakLength;
     return (
       <div>
         <TimerControl key='session' type='session' length={sessionLength} modifyLength={modifyLength}/>
         <TimerControl key='break' type='break' length={breakLength} modifyLength={modifyLength}/>
-        <TimerDisplay reset={reset}/>
+        <TimerDisplay reset={reset} startStop={startStop}/>
       </div>
     );
   }
