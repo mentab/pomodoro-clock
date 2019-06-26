@@ -27,23 +27,25 @@ class PomodoroClock extends Component {
   }
 
   handleInitTimerLength(type = TYPES[0]) {
-    switch(type)
-    {
-      case TYPES[0]:
-        this.setState({
-          timerLength: this.state.sessionLength
-        });
-        break;
-      case TYPES[1]:
-        this.setState({
-          timerLength: this.state.breakLength
-        });
-        break;
-      default:
-        this.setState({
-          timerLength: this.state.sessionLength
-        });
-        break;
+    if (!this.state.running) {
+      switch(type)
+      {
+        case TYPES[0]:
+          this.setState(prevState => ({
+            timerLength: prevState.sessionLength
+          }));
+          break;
+        case TYPES[1]:
+          this.setState(prevState => ({
+            timerLength: prevState.breakLength
+          }));
+          break;
+        default:
+          this.setState(prevState => ({
+            timerLength: prevState.sessionLength
+          }));
+          break;
+      }
     }
   }
 
@@ -77,59 +79,63 @@ class PomodoroClock extends Component {
       type: 'session',
       running: false
     });
+    this.handleInitTimerLength();
   }
   
   handleModifyLength(type, operator) {
-    switch(type) {
-      case 'session':
-        switch(operator) {
-          case '+':
-            if (this.state.sessionLength < 60)
-            {
-              this.setState({
-                sessionLength: this.state.sessionLength + 1
-              });
-            }
-            break;
-          case '-':
-            if (this.state.sessionLength > 1)
-            {
-              this.setState({
-                sessionLength: this.state.sessionLength - 1
-              });
-            }
-            break;
-          default:
-            console.log('invalid operator');
-            break;
-        }
-        break;
-      case 'break':
-        switch(operator) {
-          case '+':
-            if (this.state.breakLength < 60)
-            {
-              this.setState({
-                breakLength: this.state.breakLength + 1
-              });
-            }
-            break;
-          case '-':
-            if (this.state.breakLength > 1)
-            {
-              this.setState({
-                breakLength: this.state.breakLength - 1
-              });
-            }
-            break;
-          default:
-            console.log('invalid operator');
-            break;
-        }
-        break;
-        default:
-          console.log('invalid type');
+    if (!this.state.running) {
+      switch(type) {
+        case 'session':
+          switch(operator) {
+            case '+':
+              if (this.state.sessionLength < 60)
+              {
+                this.setState(prevState => ({
+                  sessionLength: prevState.sessionLength + 1
+                }));
+              }
+              break;
+            case '-':
+              if (this.state.sessionLength > 1)
+              {
+                this.setState(prevState => ({
+                  sessionLength: prevState.sessionLength - 1
+                }));
+              }
+              break;
+            default:
+              console.log('invalid operator');
+              break;
+          }
           break;
+        case 'break':
+          switch(operator) {
+            case '+':
+              if (this.state.breakLength < 60)
+              {
+                this.setState(prevState => ({
+                  breakLength: prevState.breakLength + 1
+                }));
+              }
+              break;
+            case '-':
+              if (this.state.breakLength > 1)
+              {
+                this.setState(prevState => ({
+                  breakLength: prevState.breakLength - 1
+                }));
+              }
+              break;
+            default:
+              console.log('invalid operator');
+              break;
+          }
+          break;
+          default:
+            console.log('invalid type');
+            break;
+      }
+      this.handleInitTimerLength();
     }
   }
   
@@ -140,11 +146,12 @@ class PomodoroClock extends Component {
     const sessionLength = this.state.sessionLength;
     const breakLength = this.state.breakLength;
     const timerLength = this.state.timerLength;
+    const type = this.state.type;
     return (
       <div>
         <TimerControl key='session' type='session' length={sessionLength} modifyLength={modifyLength}/>
         <TimerControl key='break' type='break' length={breakLength} modifyLength={modifyLength}/>
-        <TimerDisplay reset={reset} startStop={startStop} length={timerLength}/>
+        <TimerDisplay reset={reset} startStop={startStop} length={timerLength} type={type}/>
       </div>
     );
   }
