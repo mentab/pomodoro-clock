@@ -8,8 +8,8 @@ class PomodoroClock extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionLength: 25,
-      breakLength: 5,
+      sessionLength: 1500,
+      breakLength: 300,
       timerLength: 0,
       type: TYPES[0],
       running: false
@@ -73,8 +73,8 @@ class PomodoroClock extends Component {
 
   handleReset() {
     this.setState({
-      sessionLength: 25,
-      breakLength: 5,
+      sessionLength: 1500,
+      breakLength: 300,
       timerLength: 0,
       type: 'session',
       running: false
@@ -88,18 +88,18 @@ class PomodoroClock extends Component {
         case 'session':
           switch(operator) {
             case '+':
-              if (this.state.sessionLength < 60)
+              if (this.state.sessionLength < 3600)
               {
                 this.setState(prevState => ({
-                  sessionLength: prevState.sessionLength + 1
+                  sessionLength: prevState.sessionLength + 60
                 }));
               }
               break;
             case '-':
-              if (this.state.sessionLength > 1)
+              if (this.state.sessionLength > 60)
               {
                 this.setState(prevState => ({
-                  sessionLength: prevState.sessionLength - 1
+                  sessionLength: prevState.sessionLength - 60
                 }));
               }
               break;
@@ -111,18 +111,18 @@ class PomodoroClock extends Component {
         case 'break':
           switch(operator) {
             case '+':
-              if (this.state.breakLength < 60)
+              if (this.state.breakLength < 3600)
               {
                 this.setState(prevState => ({
-                  breakLength: prevState.breakLength + 1
+                  breakLength: prevState.breakLength + 60
                 }));
               }
               break;
             case '-':
-              if (this.state.breakLength > 1)
+              if (this.state.breakLength > 60)
               {
                 this.setState(prevState => ({
-                  breakLength: prevState.breakLength - 1
+                  breakLength: prevState.breakLength - 60
                 }));
               }
               break;
