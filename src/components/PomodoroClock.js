@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TimerControl from './TimerControl';
 import TimerDisplay from './TimerDisplay';
 
-const TYPES = ['SESSION', 'BREAK']
+const TYPES = ['session', 'break']
 
 class PomodoroClock extends Component {
   constructor(props) {
@@ -19,11 +19,7 @@ class PomodoroClock extends Component {
     this.handleStartStop = this.handleStartStop.bind(this);
     this.handleTimerCountDown = this.handleTimerCountDown.bind(this);
     this.handleInitTimerLength = this.handleInitTimerLength.bind(this);
-    this.timer = setInterval(this.handleTimerCountDown, 1000);
-  }
-  
-  componentWillMount() {
-    this.handleInitTimerLength();
+    this.intervalID = null;
   }
 
   handleInitTimerLength(type = TYPES[0]) {
@@ -41,18 +37,22 @@ class PomodoroClock extends Component {
           }));
           break;
         default:
-          this.setState(prevState => ({
-            timerLength: prevState.sessionLength
-          }));
+          this.setState({timerLength: 0});
           break;
       }
     }
   }
 
   handleStartStop() {
-    this.setState({
-      running: !this.state.running
-    });
+    if (!this.intervalID)
+    {
+      this.handleInitTimerLength();
+      this.intervalID = setInterval(this.handleTimerCountDown, 1000);
+    }
+
+    this.setState(prevState => ({
+      running: !prevState.running
+    }));
   }
 
   handleTimerCountDown() {
@@ -61,8 +61,7 @@ class PomodoroClock extends Component {
         this.setState({
           timerLength: this.state.timerLength - 1
         });
-      } 
-      else {
+      } else {
         this.setState(prevState => ({
           timerLength: prevState.type === TYPES[0] ? prevState.breakLength : prevState.sessionLength,
           type: TYPES.find(type => prevState.type !== type)
@@ -72,20 +71,22 @@ class PomodoroClock extends Component {
   }
 
   handleReset() {
+    clearInterval(this.intervalID);
+    this.intervalID = null;
+    
     this.setState({
       sessionLength: 1500,
       breakLength: 300,
       timerLength: 0,
-      type: 'session',
+      type: TYPES[0],
       running: false
     });
-    this.handleInitTimerLength();
   }
   
   handleModifyLength(type, operator) {
     if (!this.state.running) {
       switch(type) {
-        case 'session':
+        case TYPES[0]:
           switch(operator) {
             case '+':
               if (this.state.sessionLength < 3600)
@@ -108,7 +109,7 @@ class PomodoroClock extends Component {
               break;
           }
           break;
-        case 'break':
+        case TYPES[1]:
           switch(operator) {
             case '+':
               if (this.state.breakLength < 3600)
@@ -135,7 +136,6 @@ class PomodoroClock extends Component {
             console.log('invalid type');
             break;
       }
-      this.handleInitTimerLength();
     }
   }
   
@@ -149,8 +149,8 @@ class PomodoroClock extends Component {
     const type = this.state.type;
     return (
       <div>
-        <TimerControl key='session' type='session' length={sessionLength} modifyLength={modifyLength}/>
-        <TimerControl key='break' type='break' length={breakLength} modifyLength={modifyLength}/>
+        <TimerControl key={TYPES[0]} type={TYPES[0]} length={sessionLength} modifyLength={modifyLength}/>
+        <TimerControl key={TYPES[1]} type={TYPES[1]} length={breakLength} modifyLength={modifyLength}/>
         <TimerDisplay reset={reset} startStop={startStop} length={timerLength} type={type}/>
       </div>
     );

@@ -10,7 +10,7 @@ const TimerDisplay = (props) => {
     const formatSecondsToClock = () => {
         let m = Math.floor(length / 60);
         let s = length - 60 * m;
-        return `${formatNumberToDigit(m)} : ${formatNumberToDigit(s)}`;
+        return `${formatNumberToDigit(m)}:${formatNumberToDigit(s)}`;
     };
 
     const formatNumberToDigit = (num) => {
