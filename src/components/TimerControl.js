@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardSubtitle, Button, ButtonGroup } from 'reactstrap';
 
 const TimerControl = (props) => {
     const type = props.type;
@@ -12,12 +12,16 @@ const TimerControl = (props) => {
     };
 
     return (
-        <div>
-            <div id={type + "-label"}>{type} length</div>
-            <Button id={type + "-decrement"} onClick={() => modifyLength(type, '-')}>decrement</Button>
-			<Button id={type + "-increment"} onClick={() => modifyLength(type, '+')}>increment</Button>
-            <div id={type + "-length"}>{formatSecondsToMinutes()}</div>
-		</div>
+        <Card className="text-center">
+            <CardBody>
+                <CardTitle id={type + "-label"} className="h3">{type} length</CardTitle>
+                <CardSubtitle id={type + "-length"} className="h4">{formatSecondsToMinutes()}</CardSubtitle>
+                <ButtonGroup>
+                    <Button id={type + "-decrement"} onClick={() => modifyLength(type, '-')} color="danger">decrement</Button>
+			        <Button id={type + "-increment"} onClick={() => modifyLength(type, '+')} color="success">increment</Button>
+                </ButtonGroup>
+            </CardBody>
+		</Card>
     );
 };
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TimerControl from './TimerControl';
 import TimerDisplay from './TimerDisplay';
+import { Container, Row, Col, Jumbotron } from 'reactstrap';
 
 const TYPES = ['session', 'break']
 
@@ -152,12 +153,26 @@ class PomodoroClock extends Component {
     const timerLength = this.state.timerLength;
     const type = this.state.type;
     return (
-      <div>
-        <TimerControl key={TYPES[0]} type={TYPES[0]} length={sessionLength} modifyLength={modifyLength}/>
-        <TimerControl key={TYPES[1]} type={TYPES[1]} length={breakLength} modifyLength={modifyLength}/>
-        <TimerDisplay reset={reset} startStop={startStop} length={timerLength} type={type}/>
+      <Container>
+        <Jumbotron>
+          <h1 className="display-4">Pomodoro clock</h1>
+          <p className="lead">This is the best pomodoro clock you could find !</p>
+          <Row className="my-5">
+            <Col>
+              <TimerControl key={TYPES[0]} type={TYPES[0]} length={sessionLength} modifyLength={modifyLength}/>
+            </Col>
+            <Col>
+              <TimerControl key={TYPES[1]} type={TYPES[1]} length={breakLength} modifyLength={modifyLength}/>
+            </Col>
+          </Row>
+          <Row className="my-5">
+            <Col>
+              <TimerDisplay reset={reset} startStop={startStop} length={timerLength} type={type}/>
+            </Col>
+          </Row>
+        </Jumbotron>
         <audio id="beep" src="https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3"></audio>
-      </div>
+      </Container>
     );
   }
 }

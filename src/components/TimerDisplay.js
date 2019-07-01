@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { Card, CardBody, CardTitle, CardSubtitle, Button, ButtonGroup } from 'reactstrap';
 
 const TimerDisplay = (props) => {
     const reset = props.reset;
@@ -18,12 +18,16 @@ const TimerDisplay = (props) => {
     };
     
     return (
-        <div>
-			<div id="timer-label">{type}</div>
-            <div id="time-left">{formatSecondsToClock()}</div>
-            <div id="start_stop" onClick={startStop}>Start stop</div>
-            <div id="reset" onClick={reset}>Reset</div>
-		</div>
+        <Card>
+            <CardBody className="text-center">
+			    <CardTitle id="timer-label" className="h2">{type}</CardTitle>
+                <CardSubtitle id="time-left" className="display-1">{formatSecondsToClock()}</CardSubtitle>
+                <ButtonGroup>
+                    <Button id="start_stop" onClick={startStop} color="primary">Start stop</Button>
+                    <Button id="reset" onClick={reset} color="info">Reset</Button>
+                </ButtonGroup>
+            </CardBody>
+		</Card>
     );
 };
 
