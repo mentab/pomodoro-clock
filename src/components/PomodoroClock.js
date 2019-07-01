@@ -62,6 +62,7 @@ class PomodoroClock extends Component {
           timerLength: this.state.timerLength - 1
         });
       } else {
+        document.getElementById('beep').play();
         this.setState(prevState => ({
           timerLength: prevState.type === TYPES[0] ? prevState.breakLength : prevState.sessionLength,
           type: TYPES.find(type => prevState.type !== type)
@@ -81,6 +82,9 @@ class PomodoroClock extends Component {
       type: TYPES[0],
       running: false
     });
+
+    document.getElementById('beep').pause();
+    document.getElementById('beep').currentTime = 0;
   }
   
   handleModifyLength(type, operator) {
@@ -152,6 +156,7 @@ class PomodoroClock extends Component {
         <TimerControl key={TYPES[0]} type={TYPES[0]} length={sessionLength} modifyLength={modifyLength}/>
         <TimerControl key={TYPES[1]} type={TYPES[1]} length={breakLength} modifyLength={modifyLength}/>
         <TimerDisplay reset={reset} startStop={startStop} length={timerLength} type={type}/>
+        <audio id="beep" src="https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3"></audio>
       </div>
     );
   }
