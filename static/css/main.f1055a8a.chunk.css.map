@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,MACC,YAAa,CACV,sBAAuB,CACvB,kBAAmB,CACtB,YACD","file":"main.f1055a8a.chunk.css","sourcesContent":["#root {\r\n\tdisplay: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n\theight: 100vh;\r\n}"]}
