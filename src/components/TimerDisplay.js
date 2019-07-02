@@ -1,11 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, CardBody, CardTitle, CardSubtitle, Button, ButtonGroup } from 'reactstrap';
 
 const TimerDisplay = (props) => {
-    const reset = props.reset;
-    const startStop = props.startStop;
-    const length = props.length;
-    const type = props.type;
+    const { reset, startStop, length, type } = props;
 
     const formatSecondsToClock = () => {
         let m = Math.floor(length / 60);
@@ -30,5 +28,12 @@ const TimerDisplay = (props) => {
 		</Card>
     );
 };
+
+TimerDisplay.propTypes = {
+	reset: PropTypes.func,
+    startStop: PropTypes.func,
+    length: PropTypes.number,
+    type: PropTypes.string
+}
 
 export default TimerDisplay;

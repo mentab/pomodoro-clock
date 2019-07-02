@@ -1,11 +1,9 @@
-
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, CardBody, CardTitle, CardSubtitle, Button, ButtonGroup } from 'reactstrap';
 
 const TimerControl = (props) => {
-    const type = props.type;
-    const length = props.length;
-    const modifyLength = props.modifyLength;
+    const { type, length, modifyLength } = props;
 
     const formatSecondsToMinutes = () => {
         return length / 60;
@@ -24,5 +22,11 @@ const TimerControl = (props) => {
 		</Card>
     );
 };
+
+TimerControl.propTypes = {
+	text: PropTypes.string,
+    length: PropTypes.number,
+    modifyLength: PropTypes.func
+}
 
 export default TimerControl;

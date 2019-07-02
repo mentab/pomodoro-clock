@@ -15,15 +15,10 @@ class PomodoroClock extends Component {
       type: TYPES[0],
       running: false
     };
-    this.handleReset = this.handleReset.bind(this);
-    this.handleModifyLength = this.handleModifyLength.bind(this);
-    this.handleStartStop = this.handleStartStop.bind(this);
-    this.handleTimerCountDown = this.handleTimerCountDown.bind(this);
-    this.handleInitTimerLength = this.handleInitTimerLength.bind(this);
     this.intervalID = null;
   }
 
-  handleInitTimerLength(type = TYPES[0]) {
+  handleInitTimerLength = (type = TYPES[0]) => {
     if (!this.state.running) {
       switch(type)
       {
@@ -44,7 +39,7 @@ class PomodoroClock extends Component {
     }
   }
 
-  handleStartStop() {
+  handleStartStop = () => {
     if (!this.intervalID)
     {
       this.handleInitTimerLength();
@@ -56,7 +51,7 @@ class PomodoroClock extends Component {
     }));
   }
 
-  handleTimerCountDown() {
+  handleTimerCountDown = () => {
     if (this.state.running) {
       if (this.state.timerLength > 0) {
         this.setState({
@@ -72,7 +67,7 @@ class PomodoroClock extends Component {
     }
   }
 
-  handleReset() {
+  handleReset = () => {
     clearInterval(this.intervalID);
     this.intervalID = null;
     
@@ -88,7 +83,7 @@ class PomodoroClock extends Component {
     document.getElementById('beep').currentTime = 0;
   }
   
-  handleModifyLength(type, operator) {
+  handleModifyLength = (type, operator) => {
     if (!this.state.running) {
       switch(type) {
         case TYPES[0]:
@@ -148,10 +143,7 @@ class PomodoroClock extends Component {
     const reset = this.handleReset;
     const modifyLength = this.handleModifyLength;
     const startStop = this.handleStartStop;
-    const sessionLength = this.state.sessionLength;
-    const breakLength = this.state.breakLength;
-    const timerLength = this.state.timerLength;
-    const type = this.state.type;
+    const { sessionLength, breakLength, timerLength, type } = this.state;
     return (
       <Container>
         <Jumbotron>
